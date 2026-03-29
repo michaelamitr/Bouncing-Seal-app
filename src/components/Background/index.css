@@ -47,27 +47,27 @@
 
 .mesh-point-one {
   transform: rotate(170deg);
-  filter: blur(65px);
+  filter: blur(var(--blur-mesh-soft));
   animation: float 14s ease-in-out infinite;
 }
 
 .mesh-point-two {
   transform: rotate(20deg);
-  filter: blur(85px);
+  filter: blur(var(--blur-mesh-strong));
   margin-left: 10%;
   animation: float 18s ease-in-out infinite reverse;
 }
 
 .mesh-point-three {
   transform: rotate(312deg);
-  filter: blur(85px);
+  filter: blur(var(--blur-mesh-strong));
   margin-left: -20%;
   animation: float 16s ease-in-out infinite;
 }
 
 .mesh-point-four {
   transform: rotate(220deg);
-  filter: blur(65px);
+  filter: blur(var(--blur-mesh-soft));
   margin-bottom: -20%;
   animation: float 20s ease-in-out infinite reverse;
 }
