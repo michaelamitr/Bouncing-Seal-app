@@ -1,0 +1,72 @@
+:root {
+  --sunrise-purple: #845ec2;
+  --sunrise-pink: #d65db1;
+  --sunrise-salmon: #ff6f91;
+  --sunrise-orange: #ff9671;
+  --sunrise-yellow: #ffc75f;
+  --sunrise-lemon: #f9f871;
+  --gradient-sunrise: linear-gradient(45deg,
+      var(--sunrise-purple),
+      var(--sunrise-pink),
+      var(--sunrise-salmon),
+      var(--sunrise-orange),
+      var(--sunrise-yellow),
+      var(--sunrise-lemon));
+
+  --day-carribean: #3BCFD4;
+  --day-turquoise: #62C3AB;
+  --day-sage: #88B781;
+  --day-olive: #AFAB58;
+  --day-mustard: #D59F2E;
+  --day-orange: #FC9305;
+  --gradient-day: linear-gradient(45deg,
+      var(--day-carribean),
+      var(--day-turquoise),
+      var(--day-sage),
+      var(--day-olive),
+      var(--day-mustard),
+      var(--day-orange));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  height: 100%;
+}
+
+main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.content-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 32px;
+  font-size: 2rem;
+  font-weight: 500;
+}

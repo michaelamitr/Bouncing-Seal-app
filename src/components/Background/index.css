@@ -1,0 +1,73 @@
+@keyframes float {
+  0% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+
+  20% {
+    transform: translate(20px, -30px) scale(1.05) rotate(3deg);
+  }
+
+  40% {
+    transform: translate(45px, -60px) scale(1.1) rotate(-4deg);
+  }
+
+  60% {
+    transform: translate(30px, -40px) scale(0.95) rotate(2deg);
+  }
+
+  80% {
+    transform: translate(10px, -20px) scale(1.02) rotate(-2deg);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+}
+
+.color-mesh-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  background-position: center;
+  background-size: cover;
+  background-image: var(--gradient-sunrise);
+  gap: 50px;
+  z-index: 0;
+}
+
+.mesh-point {
+  width: calc(48% - 5%);
+  height: 40vh;
+  border-radius: 50%;
+  background-image: var(--gradient-day);
+}
+
+.mesh-point-one {
+  transform: rotate(170deg);
+  filter: blur(65px);
+  animation: float 14s ease-in-out infinite;
+}
+
+.mesh-point-two {
+  transform: rotate(20deg);
+  filter: blur(85px);
+  margin-left: 10%;
+  animation: float 18s ease-in-out infinite reverse;
+}
+
+.mesh-point-three {
+  transform: rotate(312deg);
+  filter: blur(85px);
+  margin-left: -20%;
+  animation: float 16s ease-in-out infinite;
+}
+
+.mesh-point-four {
+  transform: rotate(220deg);
+  filter: blur(65px);
+  margin-bottom: -20%;
+  animation: float 20s ease-in-out infinite reverse;
+}
