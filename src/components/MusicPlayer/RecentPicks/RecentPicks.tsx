@@ -38,12 +38,12 @@ export const RecentPicks = ({
                     alt=""
                   />
                   <div className="music-player-pick-details">
-                    <div className="music-player-pick-meta">
-                      <span>{track.channelTitle}</span>
-                      <span>{track.sourceLabel}</span>
-                    </div>
                     <strong>{track.title}</strong>
-                    <p>{track.description}</p>
+                    {track.channelTitle ? (
+                      <p className="music-player-pick-channel">
+                        {track.channelTitle}
+                      </p>
+                    ) : null}
                   </div>
                   <span className="music-player-pick-action">
                     {isSelected ? 'Loaded' : 'Play again'}

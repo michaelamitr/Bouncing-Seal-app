@@ -1,17 +1,12 @@
 import { RECENT_TRACK_LIMIT } from '../constants';
 import type { Track } from '../types';
 
-export const createTrackFromInput = (value: string, videoId: string): Track => {
-  const trimmedValue = value.trim();
-  const isUrlInput = /^https?:\/\//i.test(trimmedValue);
-
+export const createTrackFromInput = (videoId: string): Track => {
   return {
     id: videoId,
-    title: `YouTube video ${videoId}`,
-    channelTitle: isUrlInput ? 'Loaded from pasted link' : 'Loaded from video ID',
-    description: isUrlInput ? trimmedValue : `Video ID: ${videoId}`,
+    title: 'Loading video details...',
+    channelTitle: '',
     thumbnailUrl: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-    sourceLabel: isUrlInput ? 'Pasted link' : 'Video ID',
   };
 };
 

@@ -23,7 +23,7 @@ export const CurrentSelection = ({
           <p className="music-player-panel-label">Current selection</p>
           <h3>{selectedTrack?.title ?? 'No track selected yet'}</h3>
         </div>
-        {selectedTrack ? (
+        {selectedTrack?.channelTitle ? (
           <p className="music-player-channel">{selectedTrack.channelTitle}</p>
         ) : null}
       </div>

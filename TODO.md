@@ -1,8 +1,2 @@
-1. into AGENTS.md
-   - ordering imports
-   - arrow functions
-   - component structure
-   - use root variables for colors
-   - ,...
-
-2. sort Music Player into components and utils
+1. understand and check componetns and structure
+2. recent picks – uper bound info display somewhere? Why there should be upper bound? How about cookies?

@@ -70,7 +70,7 @@ export const MusicPlayer = () => {
       return;
     }
 
-    const nextTrack = createTrackFromInput(trimmedQuery, videoId);
+    const nextTrack = createTrackFromInput(videoId);
 
     setSelectedTrack(nextTrack);
     setRecentTracks((currentTracks) => upsertTrack(currentTracks, nextTrack));

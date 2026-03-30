@@ -4,9 +4,7 @@ export interface Track {
   id: string;
   title: string;
   channelTitle: string;
-  description: string;
   thumbnailUrl: string;
-  sourceLabel: string;
 }
 
 export interface PlayerVideoData {
