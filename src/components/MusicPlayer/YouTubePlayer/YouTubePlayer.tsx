@@ -25,6 +25,7 @@ export const YouTubePlayer = ({
       controls: 1,
       playsinline: 1,
       rel: 0,
+      fs: 0,
       origin:
         typeof window === 'undefined' ? undefined : window.location.origin,
     },
