@@ -1,119 +1,30 @@
-import { useState } from 'react';
-import './index.css';
-import { DIRECT_VIDEO_ID_PATTERN, RECENT_TRACK_LIMIT } from '../../constants';
+import { useState, type FormEvent } from 'react';
+import type { YouTubeProps } from 'react-youtube';
+import {
+  DEFAULT_FEEDBACK_MESSAGE,
+  EMPTY_QUERY_FEEDBACK_MESSAGE,
+  INPUT_STATES,
+  INVALID_TRACK_FEEDBACK_MESSAGE,
+  PLAYER_ERROR_FEEDBACK_MESSAGE,
+  RECENT_PICK_FEEDBACK_MESSAGE,
+  TRACK_LOADED_FEEDBACK_MESSAGE,
+} from './constants';
 import { CurrentSelection } from './CurrentSelection/CurrentSelection';
+import { RecentPicks } from './RecentPicks/RecentPicks';
+import { TrackForm } from './TrackForm/TrackForm';
+import type { InputState, PlayerWithVideoData, Track } from './types';
+import { extractVideoId } from './utils/extractVideoId';
+import { createTrackFromInput, enrichTrack, upsertTrack } from './utils/track';
+import './index.css';
 
-export interface InputStateMap {
-  idle: 'idle';
-  ready: 'ready';
-  error: 'error';
-}
-
-export interface Track {
-  id: string;
-  title: string;
-  channelTitle: string;
-  description: string;
-  thumbnailUrl: string;
-  sourceLabel: string;
-}
-
-interface PlayerVideoData {
-  author?: string;
-  title?: string;
-  video_id?: string;
-}
-
-interface PlayerWithVideoData {
-  getVideoData?: () => PlayerVideoData;
-}
-
-export interface PlayerReadyEvent {
-  target: unknown;
-}
-
-export const INPUT_STATES: InputStateMap = {
-  idle: 'idle',
-  ready: 'ready',
-  error: 'error',
-};
-
-const extractVideoId = (value: string) => {
-  const trimmedValue = value.trim();
-
-  if (DIRECT_VIDEO_ID_PATTERN.test(trimmedValue)) {
-    return trimmedValue;
-  }
-
-  try {
-    const parsedUrl = new URL(trimmedValue);
-    const hostname = parsedUrl.hostname.replace(/^www\./, '');
-
-    if (hostname === 'youtu.be') {
-      return parsedUrl.pathname.split('/').filter(Boolean)[0] ?? null;
-    }
-
-    if (hostname.endsWith('youtube.com')) {
-      const directVideoId = parsedUrl.searchParams.get('v');
-
-      if (directVideoId) {
-        return directVideoId;
-      }
-
-      const pathSegments = parsedUrl.pathname.split('/').filter(Boolean);
-
-      if (pathSegments[0] === 'embed' || pathSegments[0] === 'shorts') {
-        return pathSegments[1] ?? null;
-      }
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
-};
-
-const createTrackFromInput = (value: string, videoId: string): Track => {
-  const trimmedValue = value.trim();
-  const isUrlInput = /^https?:\/\//i.test(trimmedValue);
-
-  return {
-    id: videoId,
-    title: `YouTube video ${videoId}`,
-    channelTitle: isUrlInput
-      ? 'Loaded from pasted link'
-      : 'Loaded from video ID',
-    description: isUrlInput ? trimmedValue : `Video ID: ${videoId}`,
-    thumbnailUrl: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-    sourceLabel: isUrlInput ? 'Pasted link' : 'Video ID',
-  };
-};
-
-const upsertTrack = (list: Track[], track: Track) => {
-  return [track, ...list.filter((item) => item.id !== track.id)].slice(
-    0,
-    RECENT_TRACK_LIMIT,
-  );
-};
-
-const enrichTrack = (track: Track, title?: string, channelTitle?: string) => {
-  return {
-    ...track,
-    title: title || track.title,
-    channelTitle: channelTitle || track.channelTitle,
-  };
-};
+const feedbackId = 'music-player-feedback';
 
 export const MusicPlayer = () => {
   const [query, setQuery] = useState('');
-  const [inputState, setInputState] = useState<keyof InputStateMap>(
-    INPUT_STATES.idle,
-  );
+  const [inputState, setInputState] = useState<InputState>(INPUT_STATES.idle);
   const [recentTracks, setRecentTracks] = useState<Track[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
-  const [feedbackMessage, setFeedbackMessage] = useState(
-    'Paste a YouTube link or 11-character video ID to load a track for free.',
-  );
+  const [feedbackMessage, setFeedbackMessage] = useState(DEFAULT_FEEDBACK_MESSAGE);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const playbackLabel = isPlaying ? 'Now playing' : 'Ready to play';
@@ -140,14 +51,14 @@ export const MusicPlayer = () => {
     );
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const trimmedQuery = query.trim();
 
     if (!trimmedQuery) {
       setInputState(INPUT_STATES.error);
-      setFeedbackMessage('Paste a YouTube link or video ID to get started.');
+      setFeedbackMessage(EMPTY_QUERY_FEEDBACK_MESSAGE);
       return;
     }
 
@@ -155,9 +66,7 @@ export const MusicPlayer = () => {
 
     if (!videoId) {
       setInputState(INPUT_STATES.error);
-      setFeedbackMessage(
-        'That does not look like a valid YouTube link or 11-character video ID.',
-      );
+      setFeedbackMessage(INVALID_TRACK_FEEDBACK_MESSAGE);
       return;
     }
 
@@ -167,9 +76,7 @@ export const MusicPlayer = () => {
     setRecentTracks((currentTracks) => upsertTrack(currentTracks, nextTrack));
     setInputState(INPUT_STATES.ready);
     setIsPlaying(false);
-    setFeedbackMessage(
-      'Video loaded. Press play in the player or paste another link.',
-    );
+    setFeedbackMessage(TRACK_LOADED_FEEDBACK_MESSAGE);
     setQuery('');
   };
 
@@ -177,10 +84,10 @@ export const MusicPlayer = () => {
     setSelectedTrack(track);
     setIsPlaying(false);
     setInputState(INPUT_STATES.ready);
-    setFeedbackMessage('Video loaded from your recent picks.');
+    setFeedbackMessage(RECENT_PICK_FEEDBACK_MESSAGE);
   };
 
-  const handlePlayerReady = (event: PlayerReadyEvent) => {
+  const handlePlayerReady: NonNullable<YouTubeProps['onReady']> = (event) => {
     const player = event.target as PlayerWithVideoData;
     const videoData = player.getVideoData?.();
     const videoId =
@@ -196,6 +103,12 @@ export const MusicPlayer = () => {
     const channelTitle = videoData?.author?.trim();
 
     syncTrackMetadata(videoId, title, channelTitle);
+  };
+
+  const handlePlayerError = () => {
+    setInputState(INPUT_STATES.error);
+    setIsPlaying(false);
+    setFeedbackMessage(PLAYER_ERROR_FEEDBACK_MESSAGE);
   };
 
   return (
@@ -214,28 +127,16 @@ export const MusicPlayer = () => {
         </div>
       </div>
 
-      <form className="music-player-form" onSubmit={handleSubmit}>
-        <label className="music-player-label" htmlFor="song-search">
-          YouTube link or video ID
-        </label>
-        <div className="music-player-form-row">
-          <input
-            id="song-search"
-            name="song-search"
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            className="music-player-input"
-            placeholder="https://www.youtube.com/watch?v=... or dQw4w9WgXcQ"
-            autoComplete="off"
-          />
-          <button type="submit" className="music-player-submit">
-            Load video
-          </button>
-        </div>
-      </form>
+      <TrackForm
+        feedbackId={feedbackId}
+        hasError={inputState === INPUT_STATES.error}
+        query={query}
+        onQueryChange={setQuery}
+        onSubmit={handleSubmit}
+      />
 
       <p
+        id={feedbackId}
         className={`music-player-feedback music-player-feedback-${inputState}`}
         aria-live="polite"
       >
@@ -243,58 +144,17 @@ export const MusicPlayer = () => {
       </p>
 
       <div className="music-player-layout">
-        <div className="music-player-picks-panel">
-          <div className="music-player-picks-header">
-            <h3>Recent picks</h3>
-            <span>{recentTracks.length} saved</span>
-          </div>
-
-          {recentTracks.length > 0 ? (
-            <div className="music-player-picks" role="list">
-              {recentTracks.map((track) => {
-                const isSelected = selectedTrack?.id === track.id;
-
-                return (
-                  <button
-                    key={track.id}
-                    type="button"
-                    className={`music-player-pick ${isSelected ? 'music-player-pick-selected' : ''}`}
-                    onClick={() => handleSelectTrack(track)}
-                    aria-pressed={isSelected}
-                  >
-                    <img
-                      className="music-player-thumbnail"
-                      src={track.thumbnailUrl}
-                      alt=""
-                    />
-                    <div className="music-player-pick-details">
-                      <div className="music-player-pick-meta">
-                        <span>{track.channelTitle}</span>
-                        <span>{track.sourceLabel}</span>
-                      </div>
-                      <strong>{track.title}</strong>
-                      <p>{track.description}</p>
-                    </div>
-                    <span className="music-player-pick-action">
-                      {isSelected ? 'Loaded' : 'Play again'}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="music-player-empty">
-              <p>Loaded videos will appear here.</p>
-            </div>
-          )}
-        </div>
+        <RecentPicks
+          tracks={recentTracks}
+          selectedTrackId={selectedTrack?.id ?? null}
+          onSelectTrack={handleSelectTrack}
+        />
 
         <CurrentSelection
           selectedTrack={selectedTrack}
-          setIsPlaying={setIsPlaying}
-          handlePlayerReady={handlePlayerReady}
-          setInputState={setInputState}
-          setFeedbackMessage={setFeedbackMessage}
+          onPlaybackChange={setIsPlaying}
+          onPlayerError={handlePlayerError}
+          onPlayerReady={handlePlayerReady}
         />
       </div>
     </section>

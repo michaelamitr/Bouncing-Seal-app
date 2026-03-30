@@ -15,7 +15,6 @@
   3. Internal absolute imports
   4. Relative imports
   5. CSS / style imports
-- Leave one blank line between groups.
 
 ## Styling
 

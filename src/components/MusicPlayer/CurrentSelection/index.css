@@ -1,1 +1,25 @@
+.music-player-view-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
 
+.music-player-view-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.music-player-channel {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 720px) {
+  .music-player-view-header {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,22 +1,21 @@
-import type { InputStateMap, PlayerReadyEvent, Track } from '../MusicPlayer';
-import { PlayerIFrame } from '../PlayerIFrame/PlayerIFrame';
+import type { YouTubeProps } from 'react-youtube';
+import type { Track } from '../types';
+import { YouTubePlayer } from '../YouTubePlayer/YouTubePlayer';
 import './index.css';
 
-export interface Props {
+interface CurrentSelectionProps {
   selectedTrack: Track | null;
-  setIsPlaying: (value: React.SetStateAction<boolean>) => void;
-  handlePlayerReady: (event: PlayerReadyEvent) => void;
-  setInputState: React.Dispatch<React.SetStateAction<keyof InputStateMap>>;
-  setFeedbackMessage: React.Dispatch<React.SetStateAction<string>>;
+  onPlaybackChange: (isPlaying: boolean) => void;
+  onPlayerError: () => void;
+  onPlayerReady: NonNullable<YouTubeProps['onReady']>;
 }
 
 export const CurrentSelection = ({
   selectedTrack,
-  setIsPlaying,
-  handlePlayerReady,
-  setInputState,
-  setFeedbackMessage,
-}: Props) => {
+  onPlaybackChange,
+  onPlayerError,
+  onPlayerReady,
+}: CurrentSelectionProps) => {
   return (
     <div className="music-player-view-panel">
       <div className="music-player-view-header">
@@ -30,12 +29,11 @@ export const CurrentSelection = ({
       </div>
 
       {selectedTrack ? (
-        <PlayerIFrame
-          selectedTrack={selectedTrack}
-          setIsPlaying={setIsPlaying}
-          handlePlayerReady={handlePlayerReady}
-          setInputState={setInputState}
-          setFeedbackMessage={setFeedbackMessage}
+        <YouTubePlayer
+          track={selectedTrack}
+          onPlaybackChange={onPlaybackChange}
+          onPlayerError={onPlayerError}
+          onPlayerReady={onPlayerReady}
         />
       ) : (
         <div className="music-player-placeholder">

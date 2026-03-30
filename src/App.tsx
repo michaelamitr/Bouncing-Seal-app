@@ -1,6 +1,5 @@
 import { BackgroundMesh } from './components/Background/Background';
 import { MusicPlayer } from './components/MusicPlayer/MusicPlayer';
-import { Seal } from './components/Seal';
 
 const App = () => {
   return (
