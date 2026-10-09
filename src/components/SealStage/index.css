@@ -1,0 +1,132 @@
+.seal-stage {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--stage-background);
+}
+
+.seal-stage-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem 1rem;
+}
+
+.seal-stage-header h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+}
+
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  max-width: 100%;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--surface-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.sync-badge-dot {
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--ink-muted);
+}
+
+.sync-badge-working .sync-badge-dot {
+  background: var(--sunrise-yellow);
+  animation: sync-blink 1s ease-in-out infinite;
+}
+
+.sync-badge-locked {
+  border-color: var(--border-accent);
+  color: var(--ink-strong);
+}
+
+.sync-badge-locked .sync-badge-dot {
+  background: var(--day-carribean);
+  box-shadow: 0 0 0 0.25rem var(--surface-selected);
+}
+
+.sync-badge-action {
+  color: var(--ink-dark);
+  background: var(--accent-gradient);
+}
+
+.sync-badge-action .sync-badge-dot {
+  background: var(--ink-dark);
+}
+
+@keyframes sync-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* Scene: the seal resting on a small ice floe */
+
+.seal-scene {
+  --beat-pulse: 0;
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(2rem, 5vw, 3rem) clamp(0.75rem, 4vw, 2.5rem)
+    clamp(1rem, 3vw, 1.75rem);
+  border-radius: 1.6rem;
+  background: var(--surface-base);
+  box-shadow: var(--shadow-inner-soft);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.seal-scene-glow {
+  position: absolute;
+  inset: 12% 18% 20%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    var(--scene-glow),
+    var(--scene-glow-fade)
+  );
+  opacity: calc(0.18 + var(--beat-pulse) * 0.32);
+  transform: scale(calc(1 + var(--beat-pulse) * 0.06));
+}
+
+.seal-svg {
+  width: min(100%, 36rem);
+  filter: drop-shadow(0 1.2rem 1.6rem var(--floe-shadow));
+}
+
+.beat-dots {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.beat-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--beat-dot);
+  transition:
+    background-color 90ms ease,
+    transform 90ms ease;
+}
+
+.seal-scene[data-beat='0'] .beat-dot:nth-child(1),
+.seal-scene[data-beat='1'] .beat-dot:nth-child(2),
+.seal-scene[data-beat='2'] .beat-dot:nth-child(3),
+.seal-scene[data-beat='3'] .beat-dot:nth-child(4) {
+  background: var(--beat-dot-active);
+  transform: scale(1.35);
+}
