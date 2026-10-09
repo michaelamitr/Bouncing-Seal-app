@@ -1,0 +1,14 @@
+.music-panel {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.music-panel-header h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+}
+
+.music-panel-body {
+  min-height: 12rem;
+}

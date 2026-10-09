@@ -1,0 +1,35 @@
+.recent-picks {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.recent-picks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recent-picks-header h3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.05rem;
+}
+
+.recent-picks-clear {
+  padding: 0.3rem 0.7rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.recent-picks-clear:hover {
+  background: var(--surface-soft);
+  color: var(--ink-strong);
+}

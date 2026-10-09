@@ -1,0 +1,26 @@
+.artwork {
+  display: grid;
+  flex: none;
+  place-items: center;
+  overflow: hidden;
+  background: var(--surface-selected);
+  color: var(--ink-soft);
+}
+
+.artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.artwork-small {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.8rem;
+}
+
+.artwork-medium {
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 1rem;
+}

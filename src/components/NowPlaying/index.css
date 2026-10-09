@@ -1,0 +1,128 @@
+.now-playing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-soft);
+}
+
+.now-playing-track {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.now-playing-meta {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.now-playing-title,
+.now-playing-artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.now-playing-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.now-playing-artist {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.now-playing-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.play-button {
+  width: 3.25rem;
+  min-height: 3.25rem;
+  padding: 0;
+}
+
+.tap-button {
+  min-width: 8.5rem;
+}
+
+.tap-button-flash {
+  transform: scale(0.95);
+}
+
+.progress {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-time {
+  min-width: 2.75rem;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.progress-slider {
+  --progress: 0;
+  width: 100%;
+  height: 0.4rem;
+  margin: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    90deg,
+    var(--sunrise-yellow) calc(var(--progress) * 100%),
+    var(--surface-selected) calc(var(--progress) * 100%)
+  );
+  appearance: none;
+  cursor: pointer;
+}
+
+.progress-slider:disabled {
+  cursor: default;
+}
+
+.progress-slider::-webkit-slider-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink-strong);
+  box-shadow: var(--shadow-button);
+  appearance: none;
+}
+
+.progress-slider::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink-strong);
+}
+
+@media (max-width: 560px) {
+  .now-playing {
+    grid-template-columns: 1fr;
+  }
+
+  .now-playing-controls {
+    justify-content: space-between;
+  }
+
+  .tap-button {
+    flex: 1;
+  }
+}
