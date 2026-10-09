@@ -1,12 +1,17 @@
 {
-  "name": "my-app",
+  "name": "bouncing-seal-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "typecheck": "tsc -b",
     "preview": "vite preview"
   },
   "dependencies": {
