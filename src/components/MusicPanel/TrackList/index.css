@@ -1,0 +1,72 @@
+.track-list {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.track-row {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 1.1rem;
+  background: var(--surface-base);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.track-row:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-highlight);
+  background: var(--surface-strong);
+}
+
+.track-row-current {
+  border-color: var(--border-accent);
+  background: var(--surface-selected);
+}
+
+.track-row-text {
+  display: grid;
+  min-width: 0;
+}
+
+.track-row-title,
+.track-row-artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track-row-title {
+  font-weight: 700;
+}
+
+.track-row-artist {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.track-row-meta {
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.track-row-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-gradient);
+  color: var(--ink-dark);
+  font-weight: 800;
+}
